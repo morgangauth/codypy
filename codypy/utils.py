@@ -178,6 +178,24 @@ async def _download_binary_to_path(
 
 
 
+def _format_download_size(size_bytes: int, units=["B", "KB", "MB", "GB"]) -> str:
+    """
+    Formats a byte count into a human-readable string for download logging.
+
+    Args:
+        size_bytes (int): The number of bytes.
+
+    Returns:
+        str: A human-readable size string, e.g. "1.5 MB".
+    """
+    size = float(size_bytes)
+    unit_index = 0
+    while size > 1024 and unit_index < len(units):
+        size = size / 1024
+        unit_index += 1
+    return f"{size:.1f} {units[unit_index]}"
+
+
 async def get_remote_repositories(
     reader,
     writer,
